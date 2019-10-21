@@ -1,0 +1,12 @@
+.register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: -webkit-fill-available;
+    form {
+        width: 500px;
+    }
+}
+body {
+  font-family: "Open Sans", sans-serif;
+}

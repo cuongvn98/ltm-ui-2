@@ -8,13 +8,12 @@
   const socket = new WebSocket(
     AppConfig.PROTOCOL + AppConfig.HOST + AppConfig.PORT
   );
-
+  socket.sendJSON = json => socket.send(JSON.stringify(json));
   const listeners = new Map();
-  /**
-   *
-   */
-  socket.onmessage = message => {
-    const { type } = message;
+  socket.onmessage = event => {
+    console.log(event);
+    const message = JSON.parse(event.data);
+    const { event: type } = message;
     if (listeners.has(type)) {
       listeners.get(type)(message);
     }

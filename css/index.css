@@ -1,0 +1,16 @@
+body {
+  font-family: "Open Sans", sans-serif;
+}
+
+.txt-sz-11 {
+  font-size: 11px;
+}
+
+.chat-layout {
+  height: calc(100vh - 56px);
+}
+
+.chat-layout .chat-layout-content {
+  border: 1px #e9ecef solid;
+}
+/*# sourceMappingURL=index.css.map */

@@ -1,0 +1,10 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "chat-tool.scss",
+        "variables.scss"
+    ],
+    "names": [],
+    "file": "chat-tool.css"
+}
