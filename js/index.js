@@ -9,6 +9,7 @@
     initData();
     initInputEvent();
     initModalEvent();
+    autoUpdateStatus();
   });
   /**
    * init prefix data
@@ -178,8 +179,25 @@
           state.room = getRoomById(id);
           getMessage(id);
           changeRoomName(state.room.groupIP);
+          changeRoomMember(id);
         }
       };
+    }
+    /**
+     *
+     * @param {number} room
+     */
+    function changeRoomMember(room) {
+      socket.sendJSON({ type: "join.list", room });
+      socket.on("join.list", ({ usernames }) => {
+        const el = $("#member-list");
+        el.empty();
+        [...new Set(usernames)].forEach(user => {
+          el.append(
+            `<li class="list-group-item" id="mem-${user}">${user}</li>`
+          );
+        });
+      });
     }
     /**
      * change room name on top-bar
@@ -195,14 +213,15 @@
      * @param {Strign} content
      * @param {number} time
      * @param {number} id
-     * @return {Strign}
+     * @param {number} type
+     * @return {String}
      */
-    function genHtml(avt, name, content, time, id) {
+    function genHtml(avt, name, content, time, id, type) {
       const date = new Date(time).toLocaleString();
       return `
             <div class="room" id="room-${id}">
               <div class="avt-box">
-                <div class="avt">
+                <div class="avt ${type}">
                   ${avt}
                 </div>
               </div>
@@ -219,8 +238,8 @@
 
     const el = $("#room-list");
     el.empty();
-    state.rooms.forEach(({ groupIP: name, id, time }) => {
-      const html = genHtml(name.substring(0, 2), name, "...", time, id);
+    state.rooms.forEach(({ groupIP: name, id, time, type }) => {
+      const html = genHtml(name.substring(0, 2), name, "...", time, id, type);
       el.append(html);
       $(`#room-${id}`).click(onClick(id));
     });
@@ -277,6 +296,18 @@
     $("#create-group-btn").click(() => {
       $("#create-group-modal").modal();
     });
+    $("#submit-room-btn").click(() => {
+      const username = $("#inputState").val();
+      const name = $("#created-room-name").val();
+      $("#submit-room-btn").prop("disabled", true);
+      onSubmitCreateRoom(username, name);
+    });
+    $("#submit-group-btn").click(() => {
+      const name = $("#group-name-input").val();
+      $("#submit-group-btn").prop("disabled", true);
+      socket.sendJSON({ type: "group.create", name });
+      setTimeout(() => window.location.reload(), 500);
+    });
     /**
      * @return {Promise}
      */
@@ -296,8 +327,49 @@
         $("#inputState").append(`<option value="${user}">${user}</option>`);
       });
     }
-    function onSubmitCreateRoom() {
-
+    /**
+     *
+     * @param {String} username
+     * @param {String} name
+     */
+    function onSubmitCreateRoom(username, name) {
+      console.log(username, name);
+      socket.sendJSON({ type: "room.create", username, name });
+      setTimeout(() => window.location.reload(), 500);
     }
+  }
+  /**
+   *
+   */
+  function autoUpdateStatus() {
+    /**
+     * @return {Array<String>}
+     */
+    function getListMembers() {
+      return [
+        ...new Set([...$("#member-list").children()].map(i => $(i).text()))
+      ];
+    }
+    socket.on("user.status", ({ status, username }) => {
+      const el = $(`#mem-${username}`);
+      el.removeClass(
+        "list-group-item-primary list-group-item-warning list-group-item-danger"
+      );
+      console.log(status, el);
+      if (status === "online") {
+        el.addClass("list-group-item-primary");
+      } else if (status === "offline") {
+        el.addClass("list-group-item-danger");
+      } else if (status === "idle") {
+        el.addClass("list-group-item-warning");
+      }
+    });
+    setInterval(() => {
+      const usernames = getListMembers();
+      usernames.forEach(username =>
+        socket.sendJSON({ type: "user.status", username })
+      );
+      //
+    }, 3000);
   }
 })(window.app, window.state, $);

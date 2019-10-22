@@ -70,6 +70,9 @@
         text-align: center;
         line-height: 40px;
         vertical-align: middle;
+        &.group  {
+          background-color: #4158df; 
+        }
       }
     }
     .info {

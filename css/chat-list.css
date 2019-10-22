@@ -80,6 +80,10 @@
   vertical-align: middle;
 }
 
+.room-list .room .avt-box .avt.group {
+  background-color: #4158df;
+}
+
 .room-list .room .info {
   -webkit-box-flex: 3;
       -ms-flex-positive: 3;
