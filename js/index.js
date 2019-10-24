@@ -10,7 +10,29 @@
     initInputEvent();
     initModalEvent();
     autoUpdateStatus();
+    initInvite();
+    initKick();
+    initChangeStatus();
+    initInviteList();
+    initChangeStatus();
   });
+  /**
+   *
+   */
+  function initInviteList() {
+    const el = $("#invite-select");
+    el.empty();
+    getUsers().then(users => {
+      users.forEach(username => {
+        if (username !== state.username) {
+          el.append(`<option value="${username}">${username}</option>`);
+        } else {
+          el.append(`<option value="${username}"></option>`);
+        }
+      });
+      el.select(state.username);
+    });
+  }
   /**
    * init prefix data
    */
@@ -191,11 +213,18 @@
       socket.sendJSON({ type: "join.list", room });
       socket.on("join.list", ({ usernames }) => {
         const el = $("#member-list");
+        const kickSelectEl = $("#kick-select");
         el.empty();
+        kickSelectEl.empty();
         [...new Set(usernames)].forEach(user => {
           el.append(
             `<li class="list-group-item" id="mem-${user}">${user}</li>`
           );
+          if (user !== state.username) {
+            kickSelectEl.append(`<option value=${user}>${user}</option>`);
+          } else {
+            kickSelectEl.append(`<option value=${user}></option>`);
+          }
         });
       });
     }
@@ -308,15 +337,7 @@
       socket.sendJSON({ type: "group.create", name });
       setTimeout(() => window.location.reload(), 500);
     });
-    /**
-     * @return {Promise}
-     */
-    function getUsers() {
-      return new Promise(resolve => {
-        socket.sendJSON({ type: "user.find" });
-        socket.on("user.find", ({ users }) => resolve(users));
-      });
-    }
+
     /**
      *
      * @param {String} users
@@ -371,5 +392,60 @@
       );
       //
     }, 3000);
+  }
+  /**
+   *
+   */
+  function initInvite() {
+    socket.on("group.invite", ({ room, username }) => {});
+    $("#invite-select").on("change", function(e) {
+      const val = $(e.target).val();
+      console.log(val, state.room);
+      if (val === state.username) return;
+      if (val && state.room && state.room.id) {
+        socket.sendJSON({
+          type: "group.invite",
+          room: state.room.id,
+          username: val
+        });
+      }
+    });
+  }
+  /**
+   *
+   */
+  function initKick() {
+    socket.on("group.invite", ({ room, username }) => {});
+
+    $("#kick-select").on("change", function(e) {
+      const val = $(e.target).val();
+      if (val === state.username) return;
+      console.log(val, state.room);
+      if (val && state.room && state.room.id) {
+        socket.sendJSON({
+          type: "group.kick",
+          room: state.room.id,
+          username: val
+        });
+      }
+    });
+  }
+  /**
+   *
+   */
+  function initChangeStatus() {
+    $("#change-status-select").on("change", function(e) {
+      const val = $(e.target).val();
+      socket.sendJSON({ type: "change.status", status: val });
+    });
+  }
+  /**
+   * @return {Promise}
+   */
+  function getUsers() {
+    return new Promise(resolve => {
+      socket.sendJSON({ type: "user.find" });
+      socket.on("user.find", ({ users }) => resolve(users));
+    });
   }
 })(window.app, window.state, $);

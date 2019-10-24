@@ -1,4 +1,10 @@
 .chat-tool .list-member {
   margin-top: 10px;
 }
+
+.chat-tool .invite-container, .chat-tool .list-member, .chat-tool .kick-container {
+  border: 1px solid #e9ecef;
+  padding: 5px;
+  margin-top: 10px;
+}
 /*# sourceMappingURL=chat-tool.css.map */

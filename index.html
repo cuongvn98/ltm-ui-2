@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <title>Title</title>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap&subset=vietnamese"
-        rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap&subset=vietnamese"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="css/libs/bootstrap.css" />
     <link rel="stylesheet" href="css/libs/bootstrap-reboot.css" />
     <link rel="stylesheet" href="css/libs/bootstrap-grid.css" />
@@ -13,188 +14,306 @@
     <link rel="stylesheet" href="css/chat-list.css" />
     <link rel="stylesheet" href="css/chat-box.css" />
     <link rel="stylesheet" href="css/chat-tool.css" />
-</head>
+  </head>
 
-<body>
+  <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-            </ul>
-        </div>
+      <a class="navbar-brand" href="#">Navbar</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+        </ul>
+      </div>
     </nav>
     <div class="container-fluid">
-        <div class="row chat-layout">
-            <div class="col-3 chat-layout-content chat-list">
-                <div class="tool-bar">
-                    <form class="form-inline">
-                        <div class="form-group mx-sm-3 mb-2">
-                            <label for="search-room-input" class="sr-only">Password</label>
-                            <input type="text" class="form-control form-control-sm" id="search-room-input"
-                                placeholder="Enter friend name" />
-                            <button type="button" class="btn btn-link txt-sz-11" data-toggle="modal"
-                                id="create-room-btn">
-                                Phòng
-                            </button>
-                            <button type="button" class="btn btn-link txt-sz-11" data-toggle="modal"
-                                id="create-group-btn">
-                                Nhóm
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                <div class="room-list" id="room-list"></div>
-            </div>
-            <div class="col-6 chat-layout-content chat-box">
-                <div class="tool-bar">
-                    <div class="status-point"></div>
-                    <div class="room-name" id="room-name">...</div>
-                </div>
-                <div class="message-box-container">
-                    <div class="message-box" id="message-box">
-                        <h3>Chọn phòng</h3>
-                    </div>
-                    <div class="message-input-container">
-                        <textarea class="form-control" id="message-input"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="col-3 chat-layout-content chat-tool">
-                <div class="list-member">
-                    <div>Thanh vien</div>
-                    <ul class="list-group" id="member-list">
-                    </ul>
-                </div>
-            </div>
+      <div class="row chat-layout">
+        <div class="col-3 chat-layout-content chat-list">
+          <div class="tool-bar">
+            <form class="form-inline">
+              <div class="form-group mx-sm-3 mb-2">
+                <label for="search-room-input" class="sr-only">Password</label>
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  id="search-room-input"
+                  placeholder="Enter friend name"
+                />
+                <button
+                  type="button"
+                  class="btn btn-link txt-sz-11"
+                  data-toggle="modal"
+                  id="create-room-btn"
+                >
+                  Phòng
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-link txt-sz-11"
+                  data-toggle="modal"
+                  id="create-group-btn"
+                >
+                  Nhóm
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="room-list" id="room-list"></div>
         </div>
+        <div class="col-6 chat-layout-content chat-box">
+          <div class="tool-bar">
+            <div class="status-point"></div>
+            <div class="room-name" id="room-name">...</div>
+          </div>
+          <div class="message-box-container">
+            <div class="message-box" id="message-box">
+              <h3>Chọn phòng</h3>
+            </div>
+            <div class="message-input-container">
+              <textarea class="form-control" id="message-input"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="col-3 chat-layout-content chat-tool">
+          <div class="list-member">
+            <div>Thanh vien</div>
+            <ul class="list-group" id="member-list"></ul>
+          </div>
+          <div class="invite-container">
+            <form>
+              <div class="form-group">
+                <label for="invite-select">Thêm thành viên</label>
+                <select class="form-control" id="invite-select">
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="kick-container">
+            <form>
+              <div class="form-group">
+                <label for="kick-select">Đuổi thành viên</label>
+                <select class="form-control" id="kick-select">
+                 
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="change-status-container">
+            <form>
+              <div class="form-group">
+                <label for="change-status-select">Chuyển trạng thái</label>
+                <select class="form-control" id="change-status-select">
+                  <option>online</option>
+                  <option>offline</option>
+                  <option>idle</option>
+                </select>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- modal -->
-    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-        aria-hidden="true" id="login-modal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="response-title">Login</h5>
+    <div
+      class="modal fade bd-example-modal-sm"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="mySmallModalLabel"
+      aria-hidden="true"
+      id="login-modal"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="response-title">Login</h5>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="username" class="col-form-label">Username:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  value="hirosume"
+                />
+              </div>
+              <div class="form-group">
+                <label for="password" class="col-form-label">Password:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="password"
+                  value="1234"
+                />
+              </div>
+              <div class="form-group">
+                <div
+                  class="alert alert-danger"
+                  role="alert"
+                  id="response-message"
+                >
+                  No message here !
                 </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="username" class="col-form-label">Username:</label>
-                            <input type="text" class="form-control" id="username" value="hirosume" />
-                        </div>
-                        <div class="form-group">
-                            <label for="password" class="col-form-label">Password:</label>
-                            <input type="text" class="form-control" id="password" value="1234" />
-                        </div>
-                        <div class="form-group">
-                            <div class="alert alert-danger" role="alert" id="response-message">
-                                No message here !
-                            </div>
-                        </div>
+              </div>
 
-                        <div class="form-group">
-                            <div class="alert alert-success" role="alert" id="response-message">
-                                <a href="register.html">Hoac dang ki</a>
-                            </div>
-                        </div>
-                    </form>
+              <div class="form-group">
+                <div
+                  class="alert alert-success"
+                  role="alert"
+                  id="response-message"
+                >
+                  <a href="register.html">Hoac dang ki</a>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="login-btn">
-                        Login
-                    </button>
-                </div>
-            </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="login-btn">
+              Login
+            </button>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- end modal -->
     <!-- create room modal -->
-    <div class="modal fade" id="create-room-modal" tabindex="-1" role="dialog" aria-labelledby="create-room-modal"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Tạo phòng chat</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="inputState" class="col-form-label">Chọn bạn:</label>
-                            <select id="inputState" class="form-control">
-                                <option selected>Choose...</option>
-                                <option>...</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="message-text" class="col-form-label">Tên phòng:</label>
-                            <input id="created-room-name" class="form-control" id="message-text" type="text" />
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng
-                    </button>
-                    <button type="button" class="btn btn-primary" id="submit-room-btn">Tạo phòng</button>
-                </div>
-            </div>
+    <div
+      class="modal fade"
+      id="create-room-modal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="create-room-modal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Tạo phòng chat</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="inputState" class="col-form-label">Chọn bạn:</label>
+                <select id="inputState" class="form-control">
+                  <option selected>Choose...</option>
+                  <option>...</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="message-text" class="col-form-label"
+                  >Tên phòng:</label
+                >
+                <input
+                  id="created-room-name"
+                  class="form-control"
+                  id="message-text"
+                  type="text"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Đóng
+            </button>
+            <button type="button" class="btn btn-primary" id="submit-room-btn">
+              Tạo phòng
+            </button>
+          </div>
         </div>
+      </div>
     </div>
     <!-- end room modal -->
     <!-- group modal -->
-    <div class="modal fade" id="create-group-modal" tabindex="-1" role="dialog" aria-labelledby="create-group-modal"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel1">Tạo nhóm chat</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="room-name-input" class="col-form-label">Tên phòng:</label>
-                            <input class="form-control" id="group-name-input" type="text" />
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        Đóng
-                    </button>
-                    <button id="submit-group-btn" type="button" class="btn btn-primary">Tạo group</button>
-                </div>
-            </div>
+    <div
+      class="modal fade"
+      id="create-group-modal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="create-group-modal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">Tạo nhóm chat</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="room-name-input" class="col-form-label"
+                  >Tên phòng:</label
+                >
+                <input class="form-control" id="group-name-input" type="text" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Đóng
+            </button>
+            <button id="submit-group-btn" type="button" class="btn btn-primary">
+              Tạo group
+            </button>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- end group modal  -->
-</body>
-<script>
+  </body>
+  <script>
     window.app = {};
     window.state = {
-        username: undefined,
-        rooms: [],
-        room: undefined
+      username: undefined,
+      rooms: [],
+      room: undefined
     };
-</script>
-<script src="js/libs/jquery.js"></script>
-<script src="js/libs/bootstrap.js"></script>
-<script src="js/vendor/socket.js"></script>
+  </script>
+  <script src="js/libs/jquery.js"></script>
+  <script src="js/libs/bootstrap.js"></script>
+  <script src="js/vendor/socket.js"></script>
 
-<!-- main -->
-<script src="js/index.js"></script>
-
+  <!-- main -->
+  <script src="js/index.js"></script>
 </html>
