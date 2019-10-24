@@ -1,5 +1,9 @@
 @import "variables.scss";
 .chat-tool {
+  .invisibility {
+    visibility: hidden;
+    height: 0px;
+  }
   .list-member {
     margin-top: 10px;
     @extend .invite-container;

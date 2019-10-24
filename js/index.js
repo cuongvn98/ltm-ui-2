@@ -1,21 +1,39 @@
 (function(app, state, $) {
   "use strict";
   const socket = app.socket;
-  socket.onopen = () => {
-    console.info("connection has been established");
-  };
-  login().then(username => {
-    state.username = username;
-    initData();
-    initInputEvent();
-    initModalEvent();
-    autoUpdateStatus();
-    initInvite();
-    initKick();
-    initChangeStatus();
-    initInviteList();
-    initChangeStatus();
-  });
+
+  onSocket()
+    .then(login)
+    .then(username => {
+      state.username = username;
+      initData();
+      initInputEvent();
+      initModalEvent();
+      autoUpdateStatus();
+      initInvite();
+      initKick();
+      initChangeStatus();
+      initInviteList();
+    })
+    .catch(e => {
+      alert("co loi xay ra:", e.message);
+    });
+  /**
+   * on socket
+   * @return {Promise}
+   */
+  function onSocket() {
+    return new Promise((resolve, reject) => {
+      socket.onopen = () => {
+        console.info("connection has been established");
+        resolve();
+        clearTimeout(timeout);
+      };
+      const timeout = setTimeout(() => {
+        reject(new Error("timeout"));
+      }, 10000);
+    });
+  }
   /**
    *
    */
@@ -26,11 +44,9 @@
       users.forEach(username => {
         if (username !== state.username) {
           el.append(`<option value="${username}">${username}</option>`);
-        } else {
-          el.append(`<option value="${username}"></option>`);
         }
       });
-      el.select(state.username);
+      // el.select(state.username);
     });
   }
   /**
@@ -200,10 +216,25 @@
         if (!state.room || state.room.id !== id) {
           state.room = getRoomById(id);
           getMessage(id);
-          changeRoomName(state.room.groupIP);
+          changeRoomName(state.room.groupIP, state.room.type);
           changeRoomMember(id);
+          changeChatTool(state.room.type);
         }
       };
+    }
+    /**
+     * @param {string} type
+     */
+    function changeChatTool(type) {
+      if (type === "group") {
+        //
+        $("#invite-container").removeClass("invisibility");
+        $("#kick-container").removeClass("invisibility");
+      } else {
+        //
+        $("#invite-container").addClass("invisibility");
+        $("#kick-container").addClass("invisibility");
+      }
     }
     /**
      *
@@ -222,8 +253,6 @@
           );
           if (user !== state.username) {
             kickSelectEl.append(`<option value=${user}>${user}</option>`);
-          } else {
-            kickSelectEl.append(`<option value=${user}></option>`);
           }
         });
       });
@@ -231,9 +260,10 @@
     /**
      * change room name on top-bar
      * @param {string} tx
+     * @param {string} type
      */
-    function changeRoomName(tx) {
-      $("#room-name").text(tx);
+    function changeRoomName(tx, type) {
+      $("#room-name").text(tx + "  -  " + type);
     }
     /**
      *
@@ -376,7 +406,9 @@
       el.removeClass(
         "list-group-item-primary list-group-item-warning list-group-item-danger"
       );
-      console.log(status, el);
+      if (username === state.username) {
+        $("#change-status-select").val(status);
+      }
       if (status === "online") {
         el.addClass("list-group-item-primary");
       } else if (status === "offline") {
@@ -397,10 +429,12 @@
    *
    */
   function initInvite() {
-    socket.on("group.invite", ({ room, username }) => {});
-    $("#invite-select").on("change", function(e) {
-      const val = $(e.target).val();
-      console.log(val, state.room);
+    socket.on("group.invite", ({ room, username }) => {
+      alert(`phong: ${room} thanh vien moi: ${username}`);
+      window.location.reload();
+    });
+    $("#invite-btn").on("click", function(e) {
+      const val = $("#invite-select").val();
       if (val === state.username) return;
       if (val && state.room && state.room.id) {
         socket.sendJSON({
@@ -415,12 +449,15 @@
    *
    */
   function initKick() {
-    socket.on("group.invite", ({ room, username }) => {});
+    socket.on("group.kick", ({ room, username }) => {
+      alert(`phong: ${room} duoi thanh vien: ${username}`);
+      window.location.reload();
+    });
 
-    $("#kick-select").on("change", function(e) {
-      const val = $(e.target).val();
+    $("#kick-btn").on("click", function(e) {
+      const val = $("#kick-select").val();
+      console.log(val);
       if (val === state.username) return;
-      console.log(val, state.room);
       if (val && state.room && state.room.id) {
         socket.sendJSON({
           type: "group.kick",
@@ -437,6 +474,9 @@
     $("#change-status-select").on("change", function(e) {
       const val = $(e.target).val();
       socket.sendJSON({ type: "change.status", status: val });
+    });
+    socket.on("change.status", ({ status }) => {
+      alert("Chuyen trang thai: " + status);
     });
   }
   /**
